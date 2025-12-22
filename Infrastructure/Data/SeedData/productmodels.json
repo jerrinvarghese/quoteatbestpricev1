@@ -1,0 +1,34 @@
+[
+  {
+    "ModelName": "GR-S",
+    "MakeId": 1
+  },
+  {
+    "ModelName": "G",
+    "MakeId": 2
+  },
+  {
+    "ModelName": "Zeta",
+    "MakeId": 3
+  },
+  {
+    "ModelName": "Lxi",
+    "MakeId": 4
+  },
+  {
+    "ModelName": "Fabric Coated",
+    "MakeId": 5
+  },
+  {
+    "ModelName": "S24",
+    "MakeId": 6
+  },
+  {
+    "ModelName": "16",
+    "MakeId": 7
+  },
+  {
+    "ModelName": "15 Plus",
+    "MakeId": 7
+  }
+]

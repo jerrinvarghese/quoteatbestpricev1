@@ -1,3 +1,4 @@
+using System.Text.Json.Serialization;
 using API.Middleware;
 using Core.Interfaces;
 using Infrastructure;
@@ -16,6 +17,9 @@ builder.Services.AddDbContext<StoreContext>(opt =>
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
 builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
 builder.Services.AddCors();
+builder.Services.AddControllers().AddJsonOptions(x =>
+    x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve);
+
 
 var app = builder.Build();
 

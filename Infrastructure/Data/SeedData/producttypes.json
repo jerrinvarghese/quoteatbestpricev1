@@ -1,0 +1,17 @@
+[
+  {
+    "TypeName": "Car",
+    "TypeDescription": "Car Type",
+    "IsActive": true
+  },
+  {
+    "TypeName": "Furniture",
+    "TypeDescription": "Furniture Type",
+    "IsActive": false
+  },
+  {
+    "TypeName": "Mobile",
+    "TypeDescription": "Mobile Phones",
+    "IsActive": false
+  }
+]

@@ -1,0 +1,30 @@
+[
+  {
+    "MakeName": "Land Cruiser",
+    "BrandId": 1
+  },
+  {
+    "MakeName": "Hyryder",
+    "BrandId": 1
+  },
+  {
+    "MakeName": "Baleno",
+    "BrandId": 2
+  },
+  {
+    "MakeName": "Swift",
+    "BrandId": 2
+  },
+  {
+    "MakeName": "Celesto",
+    "BrandId": 3
+  },
+  {
+    "MakeName": "Galaxy",
+    "BrandId": 4
+  },
+  {
+    "MakeName": "Iphone",
+    "BrandId": 5
+  }
+]

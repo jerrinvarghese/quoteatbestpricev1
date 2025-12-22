@@ -1,0 +1,22 @@
+[
+  {
+    "BrandName": "Toyota",
+    "TypeId": 1
+  },
+  {
+    "BrandName": "Maruti Suzuki",
+    "TypeId": 1
+  },
+  {
+    "BrandName": "Classy Furniture",
+    "TypeId": 2
+  },
+  {
+    "BrandName": "Samsung",
+    "TypeId": 3
+  },
+  {
+    "BrandName": "Apple",
+    "TypeId": 3
+  }
+]

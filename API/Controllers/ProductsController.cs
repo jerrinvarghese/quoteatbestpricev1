@@ -6,15 +6,73 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers;
 
-public class ProductsController(IGenericRepository<Product> repo) : BaseApiController
+public class ProductsController(IGenericRepository<Product> repo, IGenericRepository<ProductType> producttyperepo,
+IGenericRepository<ProductBrand> productbrandRepo,
+    IGenericRepository<ProductMake> productmakeRepo,
+    IGenericRepository<ProductModel> productmodelRepo) : BaseApiController
 {
     [HttpGet]
     public async Task<ActionResult<IReadOnlyList<Product>>> GetProducts(
         [FromQuery]ProductSpecParams specParams)
     {
+        //before running the below four await statements,
+        //make sure to uncomment below lines in Program.cs
+        // builder.Services.AddControllers().AddJsonOptions(x =>
+        //    x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve);
+
+        //await GetProductTypes();
+        //await GetBrandsByType(1);
+        //await GetMakesByBrand(1);
+        //await GetModelsByMake(1);
         var spec = new ProductSpecification(specParams);
 
         return await CreatePagedResult(repo, spec, specParams.PageIndex, specParams.PageSize);
+    }
+
+    // [HttpGet("product-types")]
+    // public async Task<ActionResult<IReadOnlyList<ProductType>>> GetProductTypes()
+    // {
+    //     var spec = new ProductTypeSpecification();
+
+    //     var productTypes = await producttyperepo.ListAsync(spec);
+
+    //     return Ok(productTypes);
+    // }
+
+    [HttpGet("product-types")]
+    public async Task<ActionResult<IReadOnlyList<ProductType>>> GetProductTypes()
+    {
+    var spec = new ProductTypeSpecification(); // Specification to fetch all active types
+    var types = await producttyperepo.ListAsync(spec);
+
+    return Ok(types);
+    }
+
+    [HttpGet("brands/{typeId:int}")]
+    public async Task<ActionResult<IReadOnlyList<ProductBrand>>> GetBrandsByType(int typeId)
+    {
+    var spec = new ProductBrandSpecification(typeId); // Specification to filter brands by TypeId
+    var brands = await productbrandRepo.ListAsync(spec);
+
+    return Ok(brands);
+    }
+
+    [HttpGet("makes/{brandId:int}")]
+    public async Task<ActionResult<IReadOnlyList<ProductMake>>> GetMakesByBrand(int brandId)
+    {
+    var spec = new ProductMakeSpecification(brandId); // Specification to filter makes by BrandId
+    var makes = await productmakeRepo.ListAsync(spec);
+
+    return Ok(makes);
+    }
+
+    [HttpGet("models/{makeId:int}")]
+    public async Task<ActionResult<IReadOnlyList<ProductModel>>> GetModelsByMake(int makeId)
+    {
+    var spec = new ProductModelSpecification(makeId); // Specification to filter models by MakeId
+    var models = await productmodelRepo.ListAsync(spec);
+
+    return Ok(models);
     }
 
     [HttpGet("{id:int}")] // api/products/2
