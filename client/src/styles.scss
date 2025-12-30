@@ -10,3 +10,7 @@
     background-color: orange
   ));
 }
+
+.match-input-height{
+  height: var(--mat-form-container-height) !important;
+}
