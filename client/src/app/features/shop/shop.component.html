@@ -1,5 +1,4 @@
-@if(products)
-{
+@if(products){
 <div class="flex flex-col gap-3">
     <div class="flex justify-between">
         <mat-paginator
@@ -13,7 +12,9 @@
             aria-label="select page"
             >
         </mat-paginator>
-        <form #searchForm="ngForm"
+
+        <form 
+        #searchForm="ngForm"
         (ngSubmit)="onSearchChange()"
         class="relative flex items-center w-full max-w-md mx-4">
         <input type="search" class="block w-full p-4 text-sm text-gray-900 border border-gray-300 rounded-lg"
