@@ -1,8 +1,21 @@
 export class ShopParams {
-brands:string[]=[];
-types:string[]=[];
-sort='name';
-pageNumber=1;
-pageSize=10;
-search='';
+  pageNumber = 1;
+  pageSize = 10;
+
+  typeId?: number;
+  brandId?: number;
+  makeId?: number;
+  modelId?: number;
+
+  minKilometers?: number;
+  maxKilometers?: number;
+
+  minYear?: number;
+  maxYear?: number;
+
+  ownerNumber?: number;
+  transmissionType?: string;
+
+  sort = '';
+  search = '';
 }

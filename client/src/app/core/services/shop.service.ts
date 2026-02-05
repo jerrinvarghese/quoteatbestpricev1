@@ -3,6 +3,10 @@ import { inject,Injectable } from '@angular/core';
 import { Product } from '../../shared/models/product';
 import { Pagination } from '../../shared/models/pagination';
 import { ShopParams } from '../../shared/models/shopParams';
+import { ProductType } from '../../shared/models/product-type';
+import { ProductBrand } from '../../shared/models/product-brand';
+import { ProductMake } from '../../shared/models/product-make';
+import { ProductModel } from '../../shared/models/product-model';
 
 @Injectable({
   providedIn: 'root',
@@ -16,13 +20,35 @@ export class ShopService {
   getProducts(shopParams:ShopParams) {
     let params=new HttpParams();
 
-    if(shopParams.brands.length>0){
-      params=params.append('brands',shopParams.brands.join(','));
-    }
+    if (shopParams.typeId)
+    params = params.append('typeId', shopParams.typeId);
 
-    if(shopParams.types.length>0){
-      params=params.append('types',shopParams.types.join(','));
-    }
+  if (shopParams.brandId)
+    params = params.append('brandId', shopParams.brandId);
+
+  if (shopParams.makeId)
+    params = params.append('makeId', shopParams.makeId);
+
+  if (shopParams.modelId)
+    params = params.append('modelId', shopParams.modelId);
+
+  if (shopParams.minKilometers)
+    params = params.append('minKilometers', shopParams.minKilometers);
+
+  if (shopParams.maxKilometers)
+    params = params.append('maxKilometers', shopParams.maxKilometers);
+
+  if (shopParams.minYear)
+    params = params.append('minYear', shopParams.minYear);
+
+  if (shopParams.maxYear)
+    params = params.append('maxYear', shopParams.maxYear);
+
+  if (shopParams.ownerNumber)
+    params = params.append('ownerNumber', shopParams.ownerNumber);
+
+  if (shopParams.transmissionType)
+    params = params.append('transmissionType', shopParams.transmissionType);
 
     if(shopParams.sort){
       params=params.append('sort',shopParams.sort);
@@ -48,10 +74,32 @@ export class ShopService {
     })
   }
 
-  getTypes(){
-    if(this.types.length>0) return;
-    return this.http.get<string[]>(this.baseUrl+'products/types').subscribe({
-      next:response=>this.types=response
-    })
-  }
+  // getTypes(){
+  //   if(this.types.length>0) return;
+  //   return this.http.get<string[]>(this.baseUrl+'products/types').subscribe({
+  //     next:response=>this.types=response
+  //   })
+  // }
+
+getTypes() {
+  return this.http.get<ProductType[]>(this.baseUrl + 'products/product-types');
+}
+
+getBrandsByType(typeId: number) {
+  return this.http.get<ProductBrand[]>(
+`${this.baseUrl}products/brands/${typeId}`
+  );
+}
+
+getMakesByBrand(brandId: number) {
+  return this.http.get<ProductMake[]>(
+    `${this.baseUrl}products/makes/${brandId}`
+  );
+}
+
+getModelsByMake(makeId: number) {
+  return this.http.get<ProductModel[]>(
+    `${this.baseUrl}products/models/${makeId}`
+  );
+}
 }

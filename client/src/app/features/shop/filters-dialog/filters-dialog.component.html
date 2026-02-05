@@ -1,4 +1,4 @@
-<div>
+<!-- <div>
     <h3 class="text-3xl text-center pt-6 mb-3">Filters</h3>
     <mat-divider></mat-divider>
     <div class="flex p-4">
@@ -23,4 +23,104 @@
     <div class="flex justify-end p-4">
         <button mat-flat-button (click)="applyFilters()">Apply Filters</button>
     </div>
+</div> -->
+<div>
+  <h3 class="text-3xl text-center pt-6 mb-3">Filters</h3>
+  <mat-divider></mat-divider>
+  <form class="p-4" [formGroup]="filtersForm">
+    <div class="grid grid-cols-2 gap-4">
+      <!-- Type Dropdown -->
+      <mat-form-field appearance="outline">
+        <mat-label>Type</mat-label>
+        <mat-select formControlName="type" (selectionChange)="onTypeChange($event.value)">
+         <mat-option *ngFor="let type of types" [value]="type">
+            {{ type.typeName }}
+            </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <!-- Brand Dropdown -->
+      <mat-form-field appearance="outline">
+        <mat-label>Brand</mat-label>
+        <mat-select formControlName="brand" (selectionChange)="onBrandChange($event.value)">
+              <mat-option *ngFor="let brand of brands" [value]="brand.id">
+                {{ brand.brandName }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <!-- Make Dropdown -->
+       <mat-form-field appearance="outline">
+         <mat-label>Make</mat-label>
+     <mat-select
+  formControlName="make"
+  (selectionChange)="onMakeChange($event.value)">
+  <mat-option *ngFor="let make of makes" [value]="make.id">
+    {{ make.makeName }}
+  </mat-option>
+</mat-select>
+</mat-form-field>
+
+      <!-- Model Dropdown -->
+      <mat-form-field appearance="outline">
+  <mat-label>Model</mat-label>
+  <mat-select formControlName="model">
+    <mat-option *ngFor="let model of models" [value]="model.id">
+      {{ model.modelName }}
+    </mat-option>
+  </mat-select>
+</mat-form-field>
+
+      <!-- Min Kilometers -->
+      <mat-form-field appearance="outline">
+        <mat-label>Min Kilometers</mat-label>
+        <input matInput type="number" formControlName="minKilometers">
+      </mat-form-field>
+
+      <!-- Max Kilometers -->
+      <mat-form-field appearance="outline">
+        <mat-label>Max Kilometers</mat-label>
+        <input matInput type="number" formControlName="maxKilometers">
+      </mat-form-field>
+
+      <!-- Min Year -->
+      <mat-form-field appearance="outline">
+        <mat-label>Min Year</mat-label>
+        <mat-select formControlName="minYear">
+          <mat-option *ngFor="let year of years" [value]="year">{{year}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <!-- Max Year -->
+      <mat-form-field appearance="outline">
+        <mat-label>Max Year</mat-label>
+        <mat-select formControlName="maxYear">
+          <mat-option *ngFor="let year of years" [value]="year">{{year}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <!-- Owner Number -->
+      <mat-form-field appearance="outline">
+        <mat-label>Owner Number</mat-label>
+        <mat-select formControlName="ownerNumber">
+          <mat-option [value]="1">1</mat-option>
+          <mat-option [value]="2">2</mat-option>
+          <mat-option [value]="3">3</mat-option>
+          <mat-option [value]="4">More than 3</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <!-- Transmission Type -->
+      <mat-form-field appearance="outline">
+        <mat-label>Transmission Type</mat-label>
+        <mat-select formControlName="transmissionType">
+          <mat-option value="Automatic">Automatic</mat-option>
+          <mat-option value="Manual">Manual</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+    <div class="flex justify-end mt-4">
+      <button mat-flat-button color="primary" (click)="applyFilters()">Apply Filters</button>
+    </div>
+  </form>
 </div>

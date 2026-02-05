@@ -44,14 +44,12 @@ export class ShopComponent implements OnInit {
    pageSizeOptions=[5,10,15,20]
 
    ngOnInit(): void {
-    this.initializeShop();
-  }
-
-  initializeShop(){
-    this.shopService.getBrands();
-    this.shopService.getTypes();
     this.getProducts();
   }
+
+  // initializeShop(){
+  //   this.getProducts();
+  // }
 
   getProducts(){
     this.shopService.getProducts(this.shopParams).subscribe({
@@ -81,22 +79,19 @@ export class ShopComponent implements OnInit {
 }
 
   openFiltersDialog(){
-    const dialogRef=this.dialogService.open(FiltersDialogComponent,{
-      minWidth:'500px',
-      data:{
-        selectedBrands:this.shopParams.brands,
-        selectedTypes:this.shopParams.types
-      }
-    });
-    dialogRef.afterClosed().subscribe({
-      next: result=>{
-        if(result){
-          this.shopParams.brands=result.selectedBrands;
-          this.shopParams.types=result.selectedTypes;
-          this.shopParams.pageNumber=1;
-          this.getProducts();
-        }
-      }
-    })
+    const dialogRef = this.dialogService.open(FiltersDialogComponent, {
+    minWidth: '500px'
+  });
+
+  dialogRef.afterClosed().subscribe({
+    next: (result: ShopParams) => {
+      if (!result) return;
+
+      this.shopParams = result;     // 🔥 KEY CHANGE
+      this.shopParams.pageNumber = 1;
+
+      this.getProducts();
+    }
+  });
   }
 }
