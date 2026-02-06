@@ -50,6 +50,14 @@ export class ShopService {
   if (shopParams.transmissionType)
     params = params.append('transmissionType', shopParams.transmissionType);
 
+  if (shopParams.minPrice !== undefined && shopParams.minPrice !== null) {
+  params = params.append('minPrice', shopParams.minPrice.toString());
+  }
+
+  if (shopParams.maxPrice !== undefined && shopParams.maxPrice !== null) {
+  params = params.append('maxPrice', shopParams.maxPrice.toString());
+  }
+
     if(shopParams.sort){
       params=params.append('sort',shopParams.sort);
     }

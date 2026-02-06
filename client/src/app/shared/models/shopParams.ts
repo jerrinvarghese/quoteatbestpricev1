@@ -13,6 +13,9 @@ export class ShopParams {
   minYear?: number;
   maxYear?: number;
 
+  minPrice?: number;
+  maxPrice?: number;
+
   ownerNumber?: number;
   transmissionType?: string;
 

@@ -92,6 +92,8 @@ export class FiltersDialogComponent implements OnInit {
   maxKilometers: [''],
   minYear: [''],
   maxYear: [''],
+  minPrice: [null],
+  maxPrice: [null],
   ownerNumber: [''],
   transmissionType: ['']
 });
@@ -217,6 +219,9 @@ export class FiltersDialogComponent implements OnInit {
 
   params.ownerNumber = formValue.ownerNumber;
   params.transmissionType = formValue.transmissionType;
+
+  params.minPrice = formValue.minPrice;
+  params.maxPrice = formValue.maxPrice;
 
   console.log('Final filter params:', params);
 

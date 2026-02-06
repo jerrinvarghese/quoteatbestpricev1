@@ -118,6 +118,18 @@
           <mat-option value="Manual">Manual</mat-option>
         </mat-select>
       </mat-form-field>
+
+      <!-- Min Price -->
+      <mat-form-field appearance="outline">
+        <mat-label>Min Price</mat-label>
+        <input matInput type="number" formControlName="minPrice">
+      </mat-form-field>
+
+      <!-- Max Price -->
+      <mat-form-field appearance="outline">
+        <mat-label>Max Price</mat-label>
+        <input matInput type="number" formControlName="maxPrice">
+      </mat-form-field>
     </div>
     <div class="flex justify-end mt-4">
       <button mat-flat-button color="primary" (click)="applyFilters()">Apply Filters</button>
