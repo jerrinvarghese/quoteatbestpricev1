@@ -9,7 +9,8 @@ namespace API.Controllers;
 public class ProductsController(IGenericRepository<Product> repo, IGenericRepository<ProductType> producttyperepo,
 IGenericRepository<ProductBrand> productbrandRepo,
     IGenericRepository<ProductMake> productmakeRepo,
-    IGenericRepository<ProductModel> productmodelRepo) : BaseApiController
+    IGenericRepository<ProductModel> productmodelRepo,
+    IGenericRepository<City> cityRepo) : BaseApiController
 {
     [HttpGet]
     public async Task<ActionResult<IReadOnlyList<Product>>> GetProducts(
@@ -42,37 +43,37 @@ IGenericRepository<ProductBrand> productbrandRepo,
     [HttpGet("product-types")]
     public async Task<ActionResult<IReadOnlyList<ProductType>>> GetProductTypes()
     {
-    var spec = new ProductTypeSpecification(); // Specification to fetch all active types
-    var types = await producttyperepo.ListAsync(spec);
+        var spec = new ProductTypeSpecification(); // Specification to fetch all active types
+        var types = await producttyperepo.ListAsync(spec);
 
-    return Ok(types);
+        return Ok(types);
     }
 
     [HttpGet("brands/{typeId:int}")]
     public async Task<ActionResult<IReadOnlyList<ProductBrand>>> GetBrandsByType(int typeId)
     {
-    var spec = new ProductBrandSpecification(typeId); // Specification to filter brands by TypeId
-    var brands = await productbrandRepo.ListAsync(spec);
+        var spec = new ProductBrandSpecification(typeId); // Specification to filter brands by TypeId
+        var brands = await productbrandRepo.ListAsync(spec);
 
-    return Ok(brands);
+        return Ok(brands);
     }
 
     [HttpGet("makes/{brandId:int}")]
     public async Task<ActionResult<IReadOnlyList<ProductMake>>> GetMakesByBrand(int brandId)
     {
-    var spec = new ProductMakeSpecification(brandId); // Specification to filter makes by BrandId
-    var makes = await productmakeRepo.ListAsync(spec);
+        var spec = new ProductMakeSpecification(brandId); // Specification to filter makes by BrandId
+        var makes = await productmakeRepo.ListAsync(spec);
 
-    return Ok(makes);
+        return Ok(makes);
     }
 
     [HttpGet("models/{makeId:int}")]
     public async Task<ActionResult<IReadOnlyList<ProductModel>>> GetModelsByMake(int makeId)
     {
-    var spec = new ProductModelSpecification(makeId); // Specification to filter models by MakeId
-    var models = await productmodelRepo.ListAsync(spec);
+        var spec = new ProductModelSpecification(makeId); // Specification to filter models by MakeId
+        var models = await productmodelRepo.ListAsync(spec);
 
-    return Ok(models);
+        return Ok(models);
     }
 
     [HttpGet("{id:int}")] // api/products/2
@@ -151,4 +152,22 @@ IGenericRepository<ProductBrand> productbrandRepo,
     {
         return repo.Exists(id);
     }
+    
+   [HttpGet("locations")]
+public async Task<ActionResult<IReadOnlyList<string>>> GetLocations(
+    [FromQuery] string search)
+{
+    if (string.IsNullOrWhiteSpace(search) || search.Length < 3)
+        return Ok(new List<string>());
+
+    var spec = new CitySpecification(search);
+
+    var cities = await cityRepo.ListAsync(spec);
+
+    var result = cities
+        .Select(c => $"{c.Name}, {c.State}")
+        .ToList();
+
+    return Ok(result);
+}
 }

@@ -1,44 +1,12 @@
-// import { Component,inject } from '@angular/core';
- import { ShopService } from '../../../core/services/shop.service';
- import { MatDivider } from '@angular/material/divider';
- import {MatListOption, MatSelectionList} from '@angular/material/list';
- import { MatButton } from '@angular/material/button';
-// import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
- import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ShopService } from '../../../core/services/shop.service';
+import { MatDivider } from '@angular/material/divider';
+import {MatListOption, MatSelectionList} from '@angular/material/list';
+import { MatButton } from '@angular/material/button';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ProductType } from '../../../shared/models/product-type';
 import { ProductBrand } from '../../../shared/models/product-brand';
 import { ProductMake } from '../../../shared/models/product-make';
 import { ProductModel } from '../../../shared/models/product-model';
-
-
-// @Component({
-//   selector: 'app-filters-dialog',
-//   imports: [
-//     MatDivider,
-//     MatSelectionList,
-//     MatListOption,
-//     MatButton,
-//     FormsModule
-//   ],
-//   templateUrl: './filters-dialog.component.html',
-//   styleUrls: ['./filters-dialog.component.scss']
-// })
-// export class FiltersDialogComponent {
-//   shopService = inject(ShopService);
-//   private dialog = inject(MatDialogRef<FiltersDialogComponent>);
-//   data = inject(MAT_DIALOG_DATA);
-
-//   selectedBrands: string[] = this.data.selectedBrands;
-//   selectedTypes: string[] = this.data.selectedTypes;
-
-//   applyFilters() {
-//     this.dialog.close({
-//       selectedBrands: this.selectedBrands,
-//       selectedTypes: this.selectedTypes
-//     });
-//   }
-// }
-
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatFormField, MatLabel } from '@angular/material/form-field';
@@ -51,6 +19,8 @@ import { MatDialogRef } from '@angular/material/dialog';
 import { ShopParams } from '../../../shared/models/shopParams';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { Observable, startWith, map } from 'rxjs';
+import { debounceTime, distinctUntilChanged, switchMap, filter } from 'rxjs/operators';
+import { of } from 'rxjs';
 @Component({
   selector: 'app-filters-dialog',
   imports: [
@@ -81,20 +51,8 @@ export class FiltersDialogComponent implements OnInit {
   makes: ProductMake[] = [];
   models: ProductModel[] = [];
   years: number[] = [];
-  allCities: string[] = [
-  'Kaloor, Kerala',
-  'Kalyan, Thane',
-  'Kalaburagi, Karnataka',
-  'Kolkata, West Bengal',
-  'Kochi, Kerala',
-  'Kozhikode, Kerala',
-  'Kannur, Kerala',
-  'Kanpur, Uttar Pradesh',
-  'Kanchipuram, Tamil Nadu',
-  'Karur, Tamil Nadu'
-];
 
-filteredCities$!: Observable<string[]>;
+filteredLocations$!: Observable<string[]>;
 
   constructor(private fb: FormBuilder, 
     private shopService: ShopService,
@@ -118,9 +76,13 @@ filteredCities$!: Observable<string[]>;
   location: ['']           // ✅ NEW (for autocomplete)
 });
 
-this.filteredCities$ = this.filtersForm.get('location')!.valueChanges.pipe(
-  startWith(''),
-  map(value => this.filterCities(value || ''))
+this.filteredLocations$ = this.filtersForm.get('location')!.valueChanges.pipe(
+  debounceTime(300),
+  distinctUntilChanged(),
+  filter(value => value && value.length >= 3),
+  switchMap(value =>
+    this.shopService.getLocations(value)
+  )
 );
 
 
@@ -214,18 +176,6 @@ this.filteredCities$ = this.filtersForm.get('location')!.valueChanges.pipe(
       console.error('Error loading models', err);
     }
   });
-}
-
-private filterCities(value: string): string[] {
-  if (!value || value.length < 3) {
-    return [];
-  }
-
-  const filterValue = value.toLowerCase();
-
-  return this.allCities.filter(city =>
-    city.toLowerCase().startsWith(filterValue)
-  );
 }
 
   getYearsList(): number[] {

@@ -131,22 +131,26 @@
         </mat-form-field>
 
         <!-- Location Autocomplete -->
+<!-- Location -->
 <mat-form-field appearance="outline">
   <mat-label>Location</mat-label>
   <input
-    type="text"
     matInput
+    type="text"
     formControlName="location"
     [matAutocomplete]="autoLocation"
-    placeholder="Type city name"
+    placeholder="Type city (min 3 chars)"
   />
 
   <mat-autocomplete #autoLocation="matAutocomplete">
-    <mat-option *ngFor="let city of filteredCities$ | async" [value]="city">
-      {{ city }}
+    <mat-option
+      *ngFor="let location of filteredLocations$ | async"
+      [value]="location">
+      {{ location }}
     </mat-option>
   </mat-autocomplete>
 </mat-form-field>
+
 
 
       <!-- Min Price -->

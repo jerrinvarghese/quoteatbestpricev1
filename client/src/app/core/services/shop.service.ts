@@ -118,4 +118,11 @@ getModelsByMake(makeId: number) {
     `${this.baseUrl}products/models/${makeId}`
   );
 }
+
+getLocations(search: string) {
+  return this.http.get<string[]>(
+    `${this.baseUrl}products/locations`,
+    { params: { search } }
+  );
+}
 }
