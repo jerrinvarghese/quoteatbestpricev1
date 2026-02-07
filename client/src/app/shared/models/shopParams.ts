@@ -19,6 +19,10 @@ export class ShopParams {
   ownerNumber?: number;
   transmissionType?: string;
 
+  fuelType?: string;
+
+  location?: string;
+
   sort = '';
   search = '';
 }

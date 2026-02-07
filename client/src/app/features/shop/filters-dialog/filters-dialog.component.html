@@ -119,6 +119,36 @@
         </mat-select>
       </mat-form-field>
 
+      <!-- Fuel Type -->
+        <mat-form-field appearance="outline">
+            <mat-label>Fuel Type</mat-label>
+            <mat-select formControlName="fuelType">
+                <mat-option value="Petrol">Petrol</mat-option>
+                <mat-option value="Diesel">Diesel</mat-option>
+                <mat-option value="CNG">CNG</mat-option>
+                <mat-option value="Electric">Electric</mat-option>
+            </mat-select>
+        </mat-form-field>
+
+        <!-- Location Autocomplete -->
+<mat-form-field appearance="outline">
+  <mat-label>Location</mat-label>
+  <input
+    type="text"
+    matInput
+    formControlName="location"
+    [matAutocomplete]="autoLocation"
+    placeholder="Type city name"
+  />
+
+  <mat-autocomplete #autoLocation="matAutocomplete">
+    <mat-option *ngFor="let city of filteredCities$ | async" [value]="city">
+      {{ city }}
+    </mat-option>
+  </mat-autocomplete>
+</mat-form-field>
+
+
       <!-- Min Price -->
       <mat-form-field appearance="outline">
         <mat-label>Min Price</mat-label>

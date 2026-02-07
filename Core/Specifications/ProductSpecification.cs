@@ -19,7 +19,9 @@ public class ProductSpecification : BaseSpecification<Product>
         (!specParams.OwnerNumber.HasValue || x.OwnerNumber == specParams.OwnerNumber) &&
         (!specParams.MinPrice.HasValue || x.Price >= specParams.MinPrice) &&
         (!specParams.MaxPrice.HasValue || x.Price <= specParams.MaxPrice) &&
-        (string.IsNullOrEmpty(specParams.TransmissionType) || x.TransmissionType == specParams.TransmissionType.Trim())
+        (string.IsNullOrEmpty(specParams.TransmissionType) || x.TransmissionType == specParams.TransmissionType.Trim()) &&
+        (string.IsNullOrEmpty(specParams.Location) || x.Location == specParams.Location.Trim()) &&
+        (string.IsNullOrEmpty(specParams.FuelType) || x.FuelType == specParams.FuelType.Trim())
 
     )
     {

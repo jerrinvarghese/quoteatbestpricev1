@@ -16,6 +16,8 @@ public int? MinPrice { get; set; }
 public int? MaxPrice { get; set; }
 public int? OwnerNumber { get; set; }
 public string? TransmissionType { get; set; }
+public string? Location { get; set; }
+public string? FuelType { get; set; }
      private const int MaxPageSize = 50;
      public int PageIndex { get; set; } = 1;
  

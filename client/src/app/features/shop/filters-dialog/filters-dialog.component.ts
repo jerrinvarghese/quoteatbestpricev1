@@ -49,6 +49,8 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatDialogRef } from '@angular/material/dialog';
 import { ShopParams } from '../../../shared/models/shopParams';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { Observable, startWith, map } from 'rxjs';
 @Component({
   selector: 'app-filters-dialog',
   imports: [
@@ -64,10 +66,12 @@ import { ShopParams } from '../../../shared/models/shopParams';
     ReactiveFormsModule,
     CommonModule,
     MatFormFieldModule,
-    MatInputModule
+    MatInputModule,
+    MatAutocompleteModule
   ],
   templateUrl: './filters-dialog.component.html',
-  styleUrls: ['./filters-dialog.component.scss']
+  styleUrls: ['./filters-dialog.component.scss'],
+  
 })
 export class FiltersDialogComponent implements OnInit {
   filtersForm!: FormGroup;
@@ -77,6 +81,20 @@ export class FiltersDialogComponent implements OnInit {
   makes: ProductMake[] = [];
   models: ProductModel[] = [];
   years: number[] = [];
+  allCities: string[] = [
+  'Kaloor, Kerala',
+  'Kalyan, Thane',
+  'Kalaburagi, Karnataka',
+  'Kolkata, West Bengal',
+  'Kochi, Kerala',
+  'Kozhikode, Kerala',
+  'Kannur, Kerala',
+  'Kanpur, Uttar Pradesh',
+  'Kanchipuram, Tamil Nadu',
+  'Karur, Tamil Nadu'
+];
+
+filteredCities$!: Observable<string[]>;
 
   constructor(private fb: FormBuilder, 
     private shopService: ShopService,
@@ -95,8 +113,15 @@ export class FiltersDialogComponent implements OnInit {
   minPrice: [null],
   maxPrice: [null],
   ownerNumber: [''],
-  transmissionType: ['']
+  transmissionType: [''],
+  fuelType: [''],          // ✅ NEW
+  location: ['']           // ✅ NEW (for autocomplete)
 });
+
+this.filteredCities$ = this.filtersForm.get('location')!.valueChanges.pipe(
+  startWith(''),
+  map(value => this.filterCities(value || ''))
+);
 
 
     this.shopService.getTypes().subscribe({
@@ -191,6 +216,17 @@ export class FiltersDialogComponent implements OnInit {
   });
 }
 
+private filterCities(value: string): string[] {
+  if (!value || value.length < 3) {
+    return [];
+  }
+
+  const filterValue = value.toLowerCase();
+
+  return this.allCities.filter(city =>
+    city.toLowerCase().startsWith(filterValue)
+  );
+}
 
   getYearsList(): number[] {
     const currentYear = new Date().getFullYear();
@@ -222,6 +258,8 @@ export class FiltersDialogComponent implements OnInit {
 
   params.minPrice = formValue.minPrice;
   params.maxPrice = formValue.maxPrice;
+  params.fuelType = formValue.fuelType;
+  params.location = formValue.location;
 
   console.log('Final filter params:', params);
 

@@ -50,6 +50,14 @@ export class ShopService {
   if (shopParams.transmissionType)
     params = params.append('transmissionType', shopParams.transmissionType);
 
+  if (shopParams.fuelType) {
+    params = params.append('fuelType', shopParams.fuelType);
+  }
+
+  if(shopParams.location){
+    params = params.append('location', shopParams.location);
+  }
+
   if (shopParams.minPrice !== undefined && shopParams.minPrice !== null) {
   params = params.append('minPrice', shopParams.minPrice.toString());
   }
