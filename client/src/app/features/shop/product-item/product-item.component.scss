@@ -1,9 +1,85 @@
-.product-card{
-    transform: transform 0.2s, box-shadow 0.2s;
+// .product-card{
+//     transform: transform 0.2s, box-shadow 0.2s;
+// }
+
+// .product-card:hover {
+//     transform: translateY(-10px);
+//     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+//     cursor: pointer;
+// }
+
+// .product-card {
+//   height: 100%;
+//   display: flex;
+//   flex-direction: column;
+// }
+
+// /* Fixed image container */
+// .image-wrapper {
+//   width: 100%;
+//   height: 220px;            /* 👈 controls card uniformity */
+//   overflow: hidden;
+//   border-radius: 0.5rem 0.5rem 0 0;
+//   background-color: #f3f4f6; /* skeleton background */
+// }
+
+// /* Image behavior */
+// .image-wrapper img {
+//   width: 100%;
+//   height: 100%;
+//   object-fit: cover;       /* 👈 magic */
+//   object-position: center;
+//   display: block;
+// }
+
+// .image-wrapper img {
+//   transition: transform 0.3s ease;
+// }
+
+// .product-card:hover .image-wrapper img {
+//   transform: scale(1.05);
+// }
+
+.product-card {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+
+  /* hover animation */
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
+/* hover lift + shadow */
 .product-card:hover {
-    transform: translateY(-10px);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    cursor: pointer;
+  transform: translateY(-10px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.18);
+  cursor: pointer;
 }
+
+/* fixed image container */
+.image-wrapper {
+  width: 100%;
+  height: 220px;
+  overflow: hidden;
+  border-radius: 0.5rem 0.5rem 0 0;
+  background-color: #f3f4f6;
+}
+
+/* image scaling */
+.image-wrapper img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+
+  /* optional smooth zoom */
+  transition: transform 0.3s ease;
+}
+
+/* optional image zoom on card hover */
+.product-card:hover .image-wrapper img {
+  transform: scale(1.05);
+}
+
+

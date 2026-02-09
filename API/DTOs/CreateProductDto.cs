@@ -1,27 +1,26 @@
-using System.ComponentModel.DataAnnotations;
- 
- namespace API.DTOs;
- 
- public class CreateProductDto
- {
-     [Required]
-     public string Name { get; set; } = string.Empty;
- 
-     [Required]
-     public string Description { get; set; } = string.Empty;
-     
-     [Range(0.01, double.MaxValue, ErrorMessage = "Price must be greater than 0")]
-     public decimal Price { get; set; }
- 
-     [Required]
-     public string PictureUrl { get; set; } = string.Empty;
- 
-     [Required]
-     public string Type { get; set; } = string.Empty;
- 
-     [Required]
-     public string Brand { get; set; } = string.Empty;
- 
-     [Range(1, int.MaxValue, ErrorMessage = "Quantity in stock must be at least 1")]
-     public int QuantityInStock { get; set; }
- }
+public class CreateProductDto
+{
+    public string Name { get; set; }
+    public string Title { get; set; }
+    public string Description { get; set; }
+
+    public decimal Price { get; set; }
+    public int Year { get; set; }
+
+    public string? Color { get; set; }
+    public int? kilometers { get; set; }
+
+    public int OwnerNumber { get; set; }
+    public string FuelType { get; set; }
+    public string TransmissionType { get; set; }
+    public string Location { get; set; }
+
+    public int TypeId { get; set; }
+    public int BrandId { get; set; }
+    public int MakeId { get; set; }
+    public int ModelId { get; set; }
+
+    public int UserId { get; set; }
+
+    public List<IFormFile> Images { get; set; } = new();
+}

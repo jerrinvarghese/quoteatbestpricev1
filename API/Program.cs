@@ -44,5 +44,5 @@ catch (Exception ex)
     Console.WriteLine(ex);
     throw;
 }
-
+app.UseStaticFiles();
 app.Run();

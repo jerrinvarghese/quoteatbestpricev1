@@ -1,4 +1,3 @@
-using API.RequestHelpers;
 using Core.Entities;
 using Core.Interfaces;
 using Core.Specifications;
@@ -86,6 +85,78 @@ IGenericRepository<ProductBrand> productbrandRepo,
         return product;
     }
 
+    [HttpPost("create-with-images")]
+[RequestSizeLimit(10_000_000)]
+[RequestFormLimits(MultipartBodyLengthLimit = 10_000_000)]
+public async Task<ActionResult> CreateProductWithImages(
+    [FromForm] CreateProductDto dto)
+{
+    if (!ModelState.IsValid)
+        return BadRequest(ModelState);
+
+    var uploadsRoot = Path.Combine(
+        Directory.GetCurrentDirectory(),
+        "wwwroot", "images", "products"
+    );
+
+    Directory.CreateDirectory(uploadsRoot);
+
+    var imagePaths = new List<string>();
+
+    foreach (var image in dto.Images.Take(4))
+    {
+        var fileName =
+            $"{dto.UserId}_{Guid.NewGuid()}{Path.GetExtension(image.FileName)}";
+
+        var filePath = Path.Combine(uploadsRoot, fileName);
+
+        using var stream = new FileStream(filePath, FileMode.Create);
+        await image.CopyToAsync(stream);
+
+        // imagePaths.Add($"/images/products/{fileName}");
+        var imageUrl = $"{Request.Scheme}://{Request.Host}/images/products/{fileName}";
+        imagePaths.Add(imageUrl);
+    }
+
+    var product = new Product
+    {
+        Name = dto.Name,
+        Title = dto.Title,
+        Description = dto.Description,
+        Price = dto.Price,
+        Year = dto.Year,
+        Color = dto.Color,
+        kilometers = dto.kilometers,
+        OwnerNumber = dto.OwnerNumber,
+        FuelType = dto.FuelType,
+        TransmissionType = dto.TransmissionType,
+        Location = dto.Location,
+        PostingDate = DateTime.UtcNow,
+        UserId = dto.UserId,
+
+        TypeId = dto.TypeId,
+        BrandId = dto.BrandId,
+        MakeId = dto.MakeId,
+        ModelId = dto.ModelId,
+
+        PictureUrl = imagePaths.FirstOrDefault(),
+
+        ImagePathOne = imagePaths.ElementAtOrDefault(0),
+        ImagePathTwo = imagePaths.ElementAtOrDefault(1),
+        ImagePathThree = imagePaths.ElementAtOrDefault(2),
+        ImagePathFour = imagePaths.ElementAtOrDefault(3)
+    };
+
+    repo.Add(product);
+
+    if (await repo.SaveAllAsync())
+        return Ok(product);
+
+    return BadRequest("Failed to create product");
+}
+
+
+
     [HttpPost]
     public async Task<ActionResult<Product>> CreateProduct(Product product)
     {
@@ -132,21 +203,21 @@ IGenericRepository<ProductBrand> productbrandRepo,
         return BadRequest("Problem deleting the product");
     }
 
-    [HttpGet("brands")]
-    public async Task<ActionResult<IReadOnlyList<string>>> GetBrands()
-    {
-        var spec = new BrandListSpecification();
+    // [HttpGet("brands")]
+    // public async Task<ActionResult<IReadOnlyList<string>>> GetBrands()
+    // {
+    //     var spec = new BrandListSpecification();
 
-        return Ok(await repo.ListAsync(spec));
-    }
+    //     return Ok(await repo.ListAsync(spec));
+    // }
 
-    [HttpGet("types")]
-    public async Task<ActionResult<IReadOnlyList<string>>> GetTypes()
-    {
-        var spec = new TypeListSpecification();
+    // [HttpGet("types")]
+    // public async Task<ActionResult<IReadOnlyList<string>>> GetTypes()
+    // {
+    //     var spec = new TypeListSpecification();
 
-        return Ok(await repo.ListAsync(spec));
-    }
+    //     return Ok(await repo.ListAsync(spec));
+    // }
 
     private bool ProductExists(int id)
     {

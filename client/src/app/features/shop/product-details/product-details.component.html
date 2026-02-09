@@ -2,8 +2,12 @@
     <section class="py-8">
         <div class="max-w-screen-2xl px-4 mx-auto">
             <div class="grid grid-cols-2 gap-8">
-                <div class="max-w-xl mx-auto">
-                    <img class="w-full" src="{{product.pictureUrl}}" alt="product image">
+                <div class="image-wrapper max-w-xl mx-auto">
+                    <img
+                            class="product-image"
+                            [src]="product.pictureUrl"
+                            alt="product image"
+                    />
                 </div>
 
                 <div>

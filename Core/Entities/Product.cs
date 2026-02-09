@@ -7,9 +7,9 @@ public class Product : BaseEntity
     public required string Name { get; set; }// remove this if not needed
     public required string Description { get; set; }
     public decimal Price { get; set; }
-    public required string PictureUrl { get; set; }
-    public required string Type { get; set; }
-    public required string Brand { get; set; }
+    public string? PictureUrl { get; set; }
+    // public required string Type { get; set; }
+    // public required string Brand { get; set; }
     //public int QuantityInStock { get; set; }//remove this if not needed
     public int? Year{ get; set; } // Year of manufacture or model year
     public string? Color { get; set; } // Color of the product
@@ -29,7 +29,7 @@ public class Product : BaseEntity
     public int UserId { get; set; } // UserId of the owner or seller.
     public required string ImagePathOne{get; set; } // Path to the first image of the product
 
-    public required string ImagePathTwo{get; set; } // Path to the first image of the product
+    public string? ImagePathTwo{get; set; } // Path to the first image of the product
     public string? ImagePathThree{get; set; } // Path to the first image of the product
     public string? ImagePathFour{get; set; } // Path to the first image of the product
     public string? ImagePathFive{get; set; } // Path to the first image of the product

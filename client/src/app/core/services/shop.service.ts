@@ -125,4 +125,12 @@ getLocations(search: string) {
     { params: { search } }
   );
 }
+
+createProduct(formData: FormData) {
+  return this.http.post(
+    this.baseUrl + 'products/create-with-images',
+    formData
+  );
+}
+
 }

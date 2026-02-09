@@ -1,0 +1,14 @@
+.image-wrapper {
+  width: 100%;
+  aspect-ratio: 1 / 1;   // forces square like 1024x1024
+  overflow: hidden;
+  border-radius: 12px;   // optional (nice touch)
+  background-color: #f3f4f6; // light gray fallback
+}
+
+.product-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;   // 🔥 key line
+  display: block;
+}

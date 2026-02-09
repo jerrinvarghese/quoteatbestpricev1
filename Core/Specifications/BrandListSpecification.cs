@@ -4,9 +4,9 @@ using Core.Entities;
  
  public class BrandListSpecification : BaseSpecification<Product, string>
  {
-     public BrandListSpecification()
-     {
-         AddSelect(x => x.Brand);
-         ApplyDistinct();
-     }
+    //  public BrandListSpecification()
+    //  {
+    //      AddSelect(x => x.Brand);
+    //      ApplyDistinct();
+    //  }
  }
