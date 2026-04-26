@@ -13,6 +13,7 @@ public class StoreContext(DbContextOptions options) : DbContext(options)
         public DbSet<ProductMake> ProductMakes { get; set; }
         public DbSet<ProductModel> ProductModels { get; set; }
         public DbSet<City> Cities { get; set; }
+        public DbSet<BuyerNotification> BuyerNotifications { get; set; }
 
         //Added migration and add new index in SSMS as CREATE INDEX IX_Cities_Name_State ON Cities (Name, State);
 

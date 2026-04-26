@@ -133,4 +133,9 @@ createProduct(formData: FormData) {
   );
 }
 
+createNotification(data: any) {
+  return this.http.post(
+    this.baseUrl + 'notifications/create-buyer-notifications', data);
+}
+
 }

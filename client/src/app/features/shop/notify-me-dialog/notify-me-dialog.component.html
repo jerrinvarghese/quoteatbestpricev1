@@ -1,0 +1,150 @@
+<h3 class="text-3xl text-center pt-6 mb-3">Notify Me</h3>
+<mat-divider></mat-divider>
+
+<form [formGroup]="notifyForm" class="p-4">
+
+  <div class="grid grid-cols-2 gap-4">
+
+    <!-- Type -->
+    <mat-form-field appearance="outline">
+      <mat-label>Type</mat-label>
+      <mat-select formControlName="type" (selectionChange)="onTypeChange($event.value)">
+        <mat-option *ngFor="let type of types" [value]="type.id">
+          {{ type.typeName }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <!-- Brand -->
+    <mat-form-field appearance="outline">
+      <mat-label>Brand</mat-label>
+      <mat-select formControlName="brand" (selectionChange)="onBrandChange($event.value)">
+        <mat-option *ngFor="let brand of brands" [value]="brand.id">
+          {{ brand.brandName }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <!-- Make -->
+    <mat-form-field appearance="outline">
+      <mat-label>Make</mat-label>
+      <mat-select formControlName="make" (selectionChange)="onMakeChange($event.value)">
+        <mat-option *ngFor="let make of makes" [value]="make.id">
+          {{ make.makeName }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <!-- Model -->
+    <mat-form-field appearance="outline">
+      <mat-label>Model</mat-label>
+      <mat-select formControlName="model">
+        <mat-option *ngFor="let model of models" [value]="model.id">
+          {{ model.modelName }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <!-- Min KM -->
+    <mat-form-field appearance="outline">
+      <mat-label>Min Kilometers</mat-label>
+      <input matInput type="number" formControlName="minKilometers">
+    </mat-form-field>
+
+    <!-- Max KM -->
+    <mat-form-field appearance="outline">
+      <mat-label>Max Kilometers</mat-label>
+      <input matInput type="number" formControlName="maxKilometers">
+    </mat-form-field>
+
+    <!-- Min Year -->
+    <mat-form-field appearance="outline">
+      <mat-label>Min Year</mat-label>
+      <mat-select formControlName="minYear">
+        <mat-option *ngFor="let year of years" [value]="year">{{ year }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <!-- Max Year -->
+    <mat-form-field appearance="outline">
+      <mat-label>Max Year</mat-label>
+      <mat-select formControlName="maxYear">
+        <mat-option *ngFor="let year of years" [value]="year">{{ year }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <!-- Owner -->
+    <mat-form-field appearance="outline">
+      <mat-label>Owner Number</mat-label>
+      <mat-select formControlName="ownerNumber">
+        <mat-option [value]="1">1</mat-option>
+        <mat-option [value]="2">2</mat-option>
+        <mat-option [value]="3">3</mat-option>
+        <mat-option [value]="4">More than 3</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <!-- Transmission -->
+    <mat-form-field appearance="outline">
+      <mat-label>Transmission</mat-label>
+      <mat-select formControlName="transmissionType">
+        <mat-option value="Automatic">Automatic</mat-option>
+        <mat-option value="Manual">Manual</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <!-- Fuel -->
+    <mat-form-field appearance="outline">
+      <mat-label>Fuel Type</mat-label>
+      <mat-select formControlName="fuelType">
+        <mat-option value="Petrol">Petrol</mat-option>
+        <mat-option value="Diesel">Diesel</mat-option>
+        <mat-option value="CNG">CNG</mat-option>
+        <mat-option value="Electric">Electric</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <!-- Location -->
+    <mat-form-field appearance="outline">
+      <mat-label>Location</mat-label>
+      <input
+        matInput
+        type="text"
+        formControlName="location"
+        [matAutocomplete]="autoLocation"
+        placeholder="Type city (min 3 chars)">
+      <mat-autocomplete #autoLocation="matAutocomplete">
+        <mat-option *ngFor="let location of filteredLocations$ | async" [value]="location">
+          {{ location }}
+        </mat-option>
+      </mat-autocomplete>
+    </mat-form-field>
+
+    <!-- Min Price -->
+    <mat-form-field appearance="outline">
+      <mat-label>Min Price</mat-label>
+      <input matInput type="number" formControlName="minPrice">
+    </mat-form-field>
+
+    <!-- Max Price -->
+    <mat-form-field appearance="outline">
+      <mat-label>Max Price</mat-label>
+      <input matInput type="number" formControlName="maxPrice">
+    </mat-form-field>
+
+  </div>
+
+  <!-- Email -->
+  <mat-form-field appearance="outline" class="w-full mt-4">
+    <mat-label>Email</mat-label>
+    <input matInput formControlName="email" type="email">
+  </mat-form-field>
+
+  <!-- CTA -->
+  <div class="flex justify-end mt-4">
+    <button mat-flat-button color="primary" (click)="submit()">
+      Notify Me
+    </button>
+  </div>
+
+</form>
