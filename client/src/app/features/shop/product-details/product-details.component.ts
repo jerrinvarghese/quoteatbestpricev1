@@ -3,6 +3,7 @@ import { ShopService } from '../../../core/services/shop.service';
 import { ActivatedRoute } from '@angular/router';
 import { Product } from '../../../shared/models/product';
 import { CurrencyPipe } from '@angular/common';
+import { RouterModule } from '@angular/router';
 import { MatButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
 import { MatFormField, MatLabel } from '@angular/material/form-field';
@@ -19,7 +20,8 @@ import { MatDivider } from '@angular/material/divider';
     MatFormField,
     MatInput,
     MatLabel,
-    MatDivider
+    MatDivider,
+    RouterModule
   ],
   templateUrl: './product-details.component.html',
   styleUrl: './product-details.component.scss',
