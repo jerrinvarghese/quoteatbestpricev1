@@ -5,7 +5,8 @@ import { ProductDetailsComponent } from './features/shop/product-details/product
 import { CreateProductComponent } from './features/shop/create-product/create-product.component';
 
 export const routes: Routes = [
-    {path: '',component:HomeComponent},
+    // {path: '',component:HomeComponent},
+    {path: '',component:ShopComponent},
     {path: 'shop',component:ShopComponent},
     {path: 'shop/:id',component:ProductDetailsComponent},
     {path: 'sell',component: CreateProductComponent},
