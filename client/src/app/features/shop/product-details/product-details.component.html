@@ -1,80 +1,111 @@
-<a routerLink="/shop" class="inline-flex items-center text-blue-600 hover:underline mb-4 ml-4 mt-4">
-    <mat-icon>arrow_back</mat-icon>
-    <span class="ml-1">Back to Home</span>
-</a>
 @if (product) {
-    <section class="py-8">
-        <div class="max-w-screen-2xl px-4 mx-auto">
-            <div class="grid grid-cols-2 gap-8">
-                <div class="image-wrapper max-w-xl mx-auto">
-                    <img
-                            class="product-image"
-                            [src]="product.pictureUrl"
-                            alt="product image"
-                    />
-                </div>
+<section class="py-10 bg-gray-50 min-h-screen">
+  <div class="max-w-7xl mx-auto px-4">
 
-                <div>
-                    <h1 class="text-2xl font-semibold text-gray-900">{{product.name}}</h1>
-                    <div class="mt-4 items-center gap-4 flex">
-                        <p class="text-3xl font-extrabold text-gray-900">
-                            {{product.price | currency}}
-                        </p>
-                    </div>
+    <!-- Back -->
+    <a routerLink="/shop" class="inline-flex items-center text-blue-600 hover:underline mb-6">
+      <mat-icon>arrow_back</mat-icon>
+      <span class="ml-1">Back to Home</span>
+    </a>
 
-                    <div class="flex gap-4 mt-6">
-                        <button mat-flat-button class="match-input-height">
-                            <mat-icon>shopping_cart</mat-icon>
-                            Get A Quote
-                        </button>
+    <!-- Card -->
+    <div class="bg-white rounded-2xl shadow-lg p-6 grid md:grid-cols-2 gap-10">
 
-                        <mat-form-field appearance="outline" class="flex">
-                            <mat-label>Quantity</mat-label>
-                            <input matInput type="number">
-                        </mat-form-field>
-                    </div>
+      <!-- IMAGE -->
+      <div class="image-wrapper">
+        <img
+          class="product-image"
+          [src]="product.pictureUrl"
+          alt="product image"
+        />
+      </div>
 
-                    <mat-divider></mat-divider>
+      <!-- DETAILS -->
+      <div class="flex flex-col justify-between">
 
-                    <p class="mt-4 text-lg font-bold text-gray-900">
-                        {{product.description}}
-                    </p>
-                    <p class="mt-4 text-lg font-bold text-gray-900">
-                        Year: {{product.year}}
-                    </p>
-                    <p class="mt-2 text-lg font-bold text-gray-900">
-                        Fuel Type: {{product.fuelType}}
-                    </p>
-                    <p class="mt-2 text-lg font-bold text-gray-900">
-                        Transmission Type: {{product.transmissionType}}
-                    </p>
-                    <p class="mt-2 text-lg font-bold text-gray-900">
-                        Kilometers: {{product.kilometers}}
-                    </p>
-                    <p class="mt-2 text-lg font-bold text-gray-900">
-                        Owner Number: {{product.ownerNumber}}   
-                    </p>
-                    <p class="mt-2 text-lg font-bold text-gray-900">
-                        Location: {{product.location}}  
-                    </p>
-                    <p class="mt-2 text-lg font-bold text-gray-900">
-                        Posting Date: {{product.postingDate | date:'mediumDate'}}
-                    </p>
-                    <p class="mt-2 text-lg font-bold text-gray-900">
-                        Brand: {{product.brand}}
-                    </p>
-                    <p class="mt-2 text-lg font-bold text-gray-900">
-                        Type: {{product.type}}
-                    </p>
-                    <p class="mt-2 text-lg font-bold text-gray-900">
-                        Make: {{product.make}}
-                    </p>
-                    <p class="mt-2 text-lg font-bold text-gray-900">
-                        Model: {{product.model}}
-                    </p>
-                </div>
+        <!-- Title + Price -->
+        <div>
+          <h1 class="text-3xl font-bold text-gray-900">
+            {{product.name}}
+          </h1>
 
-            </div>
+          <p class="text-4xl font-extrabold text-blue-600 mt-3">
+            {{product.price | currency}}
+          </p>
         </div>
-    </section>
+
+        <!-- CTA -->
+        <div class="flex gap-4 mt-6">
+          <button mat-flat-button color="primary" class="cta-btn">
+            <mat-icon>shopping_cart</mat-icon>
+            Get A Quote
+          </button>
+
+          <mat-form-field appearance="outline" class="w-32">
+            <mat-label>Qty</mat-label>
+            <input matInput type="number" value="1">
+          </mat-form-field>
+        </div>
+
+        <mat-divider class="my-6"></mat-divider>
+
+        <!-- Description -->
+        <p class="text-gray-700 leading-relaxed">
+          {{product.description}}
+        </p>
+
+        <!-- Specs Grid -->
+        <div class="grid grid-cols-2 gap-4 mt-6 text-sm">
+
+          <div class="spec-item">
+            <span>Year</span>
+            <strong>{{product.year}}</strong>
+          </div>
+
+          <div class="spec-item">
+            <span>Fuel</span>
+            <strong>{{product.fuelType}}</strong>
+          </div>
+
+          <div class="spec-item">
+            <span>Transmission</span>
+            <strong>{{product.transmissionType}}</strong>
+          </div>
+
+          <div class="spec-item">
+            <span>KMs</span>
+            <strong>{{product.kilometers}}</strong>
+          </div>
+
+          <div class="spec-item">
+            <span>Owner</span>
+            <strong>{{product.ownerNumber}}</strong>
+          </div>
+
+          <div class="spec-item">
+            <span>Location</span>
+            <strong>{{product.location}}</strong>
+          </div>
+
+          <div class="spec-item">
+            <span>Brand</span>
+            <strong>{{product.brand}}</strong>
+          </div>
+
+          <div class="spec-item">
+            <span>Model</span>
+            <strong>{{product.model}}</strong>
+          </div>
+
+        </div>
+
+        <!-- Date -->
+        <p class="text-xs text-gray-400 mt-6">
+          Posted on {{product.postingDate | date:'mediumDate'}}
+        </p>
+
+      </div>
+    </div>
+  </div>
+</section>
 }
