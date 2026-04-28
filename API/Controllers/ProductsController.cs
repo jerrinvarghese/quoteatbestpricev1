@@ -20,24 +20,10 @@ IGenericRepository<ProductBrand> productbrandRepo,
         // builder.Services.AddControllers().AddJsonOptions(x =>
         //    x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve);
 
-        //await GetProductTypes();
-        //await GetBrandsByType(1);
-        //await GetMakesByBrand(1);
-        //await GetModelsByMake(1);
         var spec = new ProductSpecification(specParams);
 
         return await CreatePagedResult(repo, spec, specParams.PageIndex, specParams.PageSize);
     }
-
-    // [HttpGet("product-types")]
-    // public async Task<ActionResult<IReadOnlyList<ProductType>>> GetProductTypes()
-    // {
-    //     var spec = new ProductTypeSpecification();
-
-    //     var productTypes = await producttyperepo.ListAsync(spec);
-
-    //     return Ok(productTypes);
-    // }
 
     [HttpGet("product-types")]
     public async Task<ActionResult<IReadOnlyList<ProductType>>> GetProductTypes()
@@ -75,15 +61,53 @@ IGenericRepository<ProductBrand> productbrandRepo,
         return Ok(models);
     }
 
-    [HttpGet("{id:int}")] // api/products/2
-    public async Task<ActionResult<Product>> GetProduct(int id)
+    // [HttpGet("{id:int}")] // api/products/2
+    // public async Task<ActionResult<Product>> GetProduct(int id)
+    // {
+    //     var product = await repo.GetByIdAsync(id);
+
+    //     if (product == null) return NotFound();
+
+    //     return product;
+    // }
+
+    [HttpGet("{id:int}")]
+public async Task<ActionResult<ProductDto>> GetProduct(int id)
+{
+    var spec = new ProductDetailsSpecification(id); // 👈 create this
+    var product = await repo.GetEntityWithSpec(spec);
+
+    if (product == null) return NotFound();
+
+    var result = new ProductDto
     {
-        var product = await repo.GetByIdAsync(id);
+        Id = product.Id,
+        Name = product.Name,
+        Description = product.Description,
+        Price = product.Price,
+        PictureUrl = product.PictureUrl,
 
-        if (product == null) return NotFound();
+        Type = product.ProductType?.TypeName,
+        Brand = product.ProductBrand?.BrandName,
+        Make = product.ProductMake?.MakeName,
+        Model = product.ProductModel?.ModelName,
 
-        return product;
-    }
+        TypeId = product.TypeId,
+        BrandId = product.BrandId,
+        MakeId = product.MakeId,
+        ModelId = product.ModelId,
+
+        Year = product.Year ?? 0,
+        FuelType = product.FuelType,
+        TransmissionType = product.TransmissionType,
+        Kilometers = product.kilometers ?? 0,
+        OwnerNumber = product.OwnerNumber,
+        Location = product.Location,
+        PostingDate = product.PostingDate
+    };
+
+    return Ok(result);
+}
 
     [HttpPost("create-with-images")]
 [RequestSizeLimit(10_000_000)]
@@ -202,22 +226,6 @@ public async Task<ActionResult> CreateProductWithImages(
 
         return BadRequest("Problem deleting the product");
     }
-
-    // [HttpGet("brands")]
-    // public async Task<ActionResult<IReadOnlyList<string>>> GetBrands()
-    // {
-    //     var spec = new BrandListSpecification();
-
-    //     return Ok(await repo.ListAsync(spec));
-    // }
-
-    // [HttpGet("types")]
-    // public async Task<ActionResult<IReadOnlyList<string>>> GetTypes()
-    // {
-    //     var spec = new TypeListSpecification();
-
-    //     return Ok(await repo.ListAsync(spec));
-    // }
 
     private bool ProductExists(int id)
     {

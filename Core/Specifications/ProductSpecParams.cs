@@ -18,6 +18,11 @@ public int? OwnerNumber { get; set; }
 public string? TransmissionType { get; set; }
 public string? Location { get; set; }
 public string? FuelType { get; set; }
+
+public string? ProductType{get;set;}
+public string? ProductBrand{get;set;}
+public string? ProductMake{get;set;}
+public string? ProductModel{get;set;}
      private const int MaxPageSize = 50;
      public int PageIndex { get; set; } = 1;
  

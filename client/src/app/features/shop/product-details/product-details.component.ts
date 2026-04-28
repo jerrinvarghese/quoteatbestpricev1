@@ -9,6 +9,7 @@ import { MatIcon } from '@angular/material/icon';
 import { MatFormField, MatLabel } from '@angular/material/form-field';
 import { MatInput} from '@angular/material/input';
 import { MatDivider } from '@angular/material/divider';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-product-details',
@@ -21,7 +22,8 @@ import { MatDivider } from '@angular/material/divider';
     MatInput,
     MatLabel,
     MatDivider,
-    RouterModule
+    RouterModule,
+    DatePipe
   ],
   templateUrl: './product-details.component.html',
   styleUrl: './product-details.component.scss',
@@ -39,7 +41,10 @@ loadProduct(){
   const id=this.activatedRoute.snapshot.paramMap.get('id');
   if(!id) return;
   this.shopService.getProduct(+id).subscribe({
-    next:product=>this.product=product,
+    next:product=>{
+      console.log('Product response:', product); // ✅ log here
+      console.table(product); // ✅ log in table format
+      this.product=product},
     error:error=>console.log(error)
   })
 }
