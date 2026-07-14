@@ -65,7 +65,7 @@ filteredLocations$!: Observable<string[]>;
       make: [{ value: null, disabled: true }, Validators.required],
       model: [{ value: null, disabled: true }, Validators.required],
 
-      images: [[]] // File[]
+      images: [[], Validators.required] // File[]
     });
 
     this.loadTypes();
@@ -145,14 +145,43 @@ filteredLocations$!: Observable<string[]>;
   }
 
   onFilesSelected(event: any) {
-    const files: File[] = Array.from(event.target.files);
+    const newFiles: File[] = Array.from(event.target.files || []);
+    if (!newFiles.length) return;
 
-    if (files.length > 4) {
-      alert('Maximum 4 images allowed');
-      return;
+    const existing: File[] = this.images || [];
+    const combined = existing.concat(newFiles);
+
+    if (combined.length > 5) {
+      const allowedToAdd = Math.max(0, 5 - existing.length);
+      if (allowedToAdd <= 0) {
+        alert('Maximum 5 images already selected');
+        // reset input so user can reselect
+        try { event.target.value = ''; } catch {}
+        return;
+      }
+
+      const toAdd = newFiles.slice(0, allowedToAdd);
+      const updated = existing.concat(toAdd);
+      this.productForm.patchValue({ images: updated });
+      alert(`Maximum 5 images allowed — added ${toAdd.length} file(s)`);
+    } else {
+      this.productForm.patchValue({ images: combined });
     }
 
-    this.productForm.patchValue({ images: files });
+    this.productForm.get('images')?.markAsTouched();
+
+    // Clear the native input value so selecting the same file again triggers change
+    try { event.target.value = ''; } catch {}
+  }
+
+  get images(): File[] {
+    return this.productForm.get('images')?.value || [];
+  }
+
+  removeImage(index: number) {
+    const imgs: File[] = this.images.slice();
+    imgs.splice(index, 1);
+    this.productForm.patchValue({ images: imgs });
   }
 
   submit() {

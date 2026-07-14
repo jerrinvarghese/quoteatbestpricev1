@@ -114,7 +114,19 @@
   </mat-form-field>
 
   <div class="col-span-2">
+    <label class="block mb-2">Images (1 required, up to 5)</label>
     <input type="file" multiple accept="image/*" (change)="onFilesSelected($event)">
+
+    <div *ngIf="productForm.get('images')?.invalid && productForm.get('images')?.touched" class="text-red-600 mt-2">
+      At least one image is required.
+    </div>
+
+    <ul *ngIf="images.length" class="mt-2 list-disc list-inside">
+      <li *ngFor="let f of images; let i = index" class="flex items-center gap-2">
+        <span>{{ i + 1 }}. {{ f.name }}</span>
+        <button type="button" class="ml-2 text-sm text-red-600" (click)="removeImage(i)">Remove</button>
+      </li>
+    </ul>
   </div>
 
   <div class="col-span-2 flex justify-end">

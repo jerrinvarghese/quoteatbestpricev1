@@ -106,7 +106,12 @@ public async Task<ActionResult<ProductDto>> GetProduct(int id)
         Kilometers = product.kilometers ?? 0,
         OwnerNumber = product.OwnerNumber,
         Location = product.Location,
-        PostingDate = product.PostingDate
+        PostingDate = product.PostingDate,
+        ImagePathOne = product.ImagePathOne,
+        ImagePathTwo = product.ImagePathTwo,
+        ImagePathThree = product.ImagePathThree,
+        ImagePathFour = product.ImagePathFour,  
+        ImagePathFive = product.ImagePathFive
     };
 
     return Ok(result);

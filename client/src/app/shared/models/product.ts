@@ -20,4 +20,9 @@ export type Product = {
     typeId: number;
     makeId: number;
     modelId: number;
+    imagePathOne: string;
+    imagePathTwo: string;
+    imagePathThree: string;
+    imagePathFour: string;
+    imagePathFive: string;
 }

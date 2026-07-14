@@ -16,6 +16,11 @@ public class ProductDto
     public string Description { get; set; }
     public decimal Price { get; set; }
     public string PictureUrl { get; set; }
+    public string ImagePathOne { get; set; }
+    public string ImagePathTwo { get; set; }
+    public string ImagePathThree { get; set; }
+    public string ImagePathFour { get; set; }
+    public string ImagePathFive { get; set; }
 
     public int Year { get; set; }
     public string FuelType { get; set; }
