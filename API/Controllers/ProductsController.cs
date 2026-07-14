@@ -2,6 +2,9 @@ using Core.Entities;
 using Core.Interfaces;
 using Core.Specifications;
 using Microsoft.AspNetCore.Mvc;
+using SixLabors.ImageSharp;
+using SixLabors.ImageSharp.Formats.Jpeg;
+using SixLabors.ImageSharp.Processing;
 
 namespace API.Controllers;
 
@@ -118,6 +121,12 @@ public async Task<ActionResult> CreateProductWithImages(
     if (!ModelState.IsValid)
         return BadRequest(ModelState);
 
+    const long targetImageSizeBytes = 500 * 1024; // target size after compression
+    const int maxImageDimension = 1600;
+
+    if (dto.Images is null || dto.Images.Count == 0)
+        return BadRequest("At least one image is required.");
+
     var uploadsRoot = Path.Combine(
         Directory.GetCurrentDirectory(),
         "wwwroot", "images", "products"
@@ -127,17 +136,15 @@ public async Task<ActionResult> CreateProductWithImages(
 
     var imagePaths = new List<string>();
 
-    foreach (var image in dto.Images.Take(4))
+    foreach (var image in dto.Images.Where(i => i is { Length: > 0 }).Take(4))
     {
         var fileName =
-            $"{dto.UserId}_{Guid.NewGuid()}{Path.GetExtension(image.FileName)}";
+            $"{dto.UserId}_{Guid.NewGuid()}.jpg";
 
         var filePath = Path.Combine(uploadsRoot, fileName);
 
-        using var stream = new FileStream(filePath, FileMode.Create);
-        await image.CopyToAsync(stream);
+        await SaveCompressedImageAsync(image, filePath, targetImageSizeBytes, maxImageDimension);
 
-        // imagePaths.Add($"/images/products/{fileName}");
         var imageUrl = $"{Request.Scheme}://{Request.Host}/images/products/{fileName}";
         imagePaths.Add(imageUrl);
     }
@@ -230,6 +237,41 @@ public async Task<ActionResult> CreateProductWithImages(
     private bool ProductExists(int id)
     {
         return repo.Exists(id);
+    }
+
+    private static async Task SaveCompressedImageAsync(IFormFile image, string filePath, long targetSizeBytes, int maxDimension)
+    {
+        await using var inputStream = image.OpenReadStream();
+        using var sourceImage = await Image.LoadAsync(inputStream);
+
+        var width = sourceImage.Width;
+        var height = sourceImage.Height;
+        var scale = Math.Min(1d, maxDimension / (double)Math.Max(width, height));
+        var newWidth = Math.Max(1, (int)Math.Round(width * scale));
+        var newHeight = Math.Max(1, (int)Math.Round(height * scale));
+
+        sourceImage.Mutate(x => x.Resize(new ResizeOptions
+        {
+            Mode = ResizeMode.Max,
+            Size = new Size(newWidth, newHeight)
+        }));
+
+        var quality = 85;
+        await SaveImageAsync(sourceImage, filePath, quality);
+
+        while (new FileInfo(filePath).Length > targetSizeBytes && quality > 20)
+        {
+            quality -= 10;
+            await SaveImageAsync(sourceImage, filePath, quality);
+        }
+    }
+
+    private static async Task SaveImageAsync(Image sourceImage, string filePath, int quality)
+    {
+        var encoder = new JpegEncoder { Quality = quality };
+
+        await using var outputStream = new FileStream(filePath, FileMode.Create);
+        await sourceImage.SaveAsJpegAsync(outputStream, encoder);
     }
     
    [HttpGet("locations")]
