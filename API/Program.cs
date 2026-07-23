@@ -3,6 +3,7 @@ using API.Middleware;
 using Core.Interfaces;
 using Infrastructure;
 using Infrastructure.Data;
+using Core.Entities;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -19,17 +20,20 @@ builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepositor
 builder.Services.AddCors();
 // builder.Services.AddControllers().AddJsonOptions(x =>
 //     x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve);
-
+builder.Services.AddAuthorization();
+builder.Services.AddIdentityApiEndpoints<AppUser>()
+    .AddEntityFrameworkStores<StoreContext>();
 
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
 app.UseMiddleware<ExceptionMiddleware>();
 
-app.UseCors(x => x.AllowAnyHeader().AllowAnyMethod()
+app.UseCors(x => x.AllowAnyHeader().AllowAnyMethod().AllowCredentials()
     .WithOrigins("http://localhost:4200","https://localhost:4200"));
 
 app.MapControllers();
+app.MapGroup("api").MapIdentityApi<AppUser>(); // api/login
 
 try
 {

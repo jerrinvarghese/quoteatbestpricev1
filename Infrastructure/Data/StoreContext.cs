@@ -1,11 +1,12 @@
 using System;
 using Core.Entities;
 using Infrastructure.Config;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Data;
 
-public class StoreContext(DbContextOptions options) : DbContext(options)
+public class StoreContext(DbContextOptions options) : IdentityDbContext<AppUser>(options)
 {
         public DbSet<Product> Products { get; set; }
         public DbSet<ProductType> ProductTypes { get; set; }
@@ -14,6 +15,7 @@ public class StoreContext(DbContextOptions options) : DbContext(options)
         public DbSet<ProductModel> ProductModels { get; set; }
         public DbSet<City> Cities { get; set; }
         public DbSet<BuyerNotification> BuyerNotifications { get; set; }
+        public DbSet<Address> Addresses { get; set; }
 
         //Added migration and add new index in SSMS as CREATE INDEX IX_Cities_Name_State ON Cities (Name, State);
 
